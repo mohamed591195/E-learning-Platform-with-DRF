@@ -38,7 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     #own
-    'courses.apps.CoursesConfig'
+    'courses.apps.CoursesConfig',
+    'students.apps.StudentsConfig',
+    #third_party
+    'django_extensions',
+    'embed_video',
+    'memcache_status',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -101,6 +107,17 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+#Cach settings 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '127.0.0.1:11211'
+    }
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CALSSES': 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
@@ -118,7 +135,9 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
-
+from django.urls import reverse_lazy
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+LOGIN_URL = 'courses:login'
+LOGIN_REDIRECT_URL = reverse_lazy('student_course_list')
